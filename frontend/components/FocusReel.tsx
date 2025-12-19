@@ -5,18 +5,18 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { ChevronRight, X } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
-// Replace with your AWS links
+// Your photos (No titles needed now)
 const photos = [
- { id: 1, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/535267512_3904455299851881_8001273326730162823_n.heic",  },
-  { id: 2, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/554964179_17998677248819013_8907473286905233585_n.heic",  },
-  { id: 3, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/489858367_678639281484857_2392473643447251943_n.heic",  },
-  { id: 4, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/495674392_1052986236742292_7192999295702587184_n.heic",  },
-  { id: 5, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/518457248_1946458459510988_484642713090936153_n.heic",  },
-  { id: 6, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/486663875_637065875959028_3857943899283404276_n.heic",  }, 
-  { id: 7, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/591140837_18005754005819013_5144521881938673645_n.heic",  },
-  { id: 8, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/591121954_18005754104819013_7034465213696952520_n.heic",  },
-  { id: 9, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/565951395_18001795778819013_457205484287609084_n.heic",  },
-  { id: 10, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/566593708_18001795712819013_2263524674656509398_n.heic",  }
+  { id: 1, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/535267512_3904455299851881_8001273326730162823_n.heic" },
+  { id: 2, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/554964179_17998677248819013_8907473286905233585_n.heic" },
+  { id: 3, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/489858367_678639281484857_2392473643447251943_n.heic" },
+  { id: 4, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/495674392_1052986236742292_7192999295702587184_n.heic" },
+  { id: 5, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/518457248_1946458459510988_484642713090936153_n.heic" },
+  { id: 6, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/486663875_637065875959028_3857943899283404276_n.heic" }, 
+  { id: 7, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/591140837_18005754005819013_5144521881938673645_n.heic" },
+  { id: 8, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/591121954_18005754104819013_7034465213696952520_n.heic" },
+  { id: 9, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/565951395_18001795778819013_457205484287609084_n.heic" },
+  { id: 10, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/566593708_18001795712819013_2263524674656509398_n.heic" }
 ];
 
 export default function FocusReel() {
@@ -28,7 +28,6 @@ export default function FocusReel() {
     target: targetRef,
   });
 
-  // FIX: Changed -65% to -85% to ensure the last photo is fully revealed
   const x = useTransform(scrollYProgress, [0, 1], ["1%", "-85%"]);
 
   return (
@@ -88,7 +87,7 @@ export default function FocusReel() {
             >
               <img 
                 src={selectedPhoto.url} 
-                alt={selectedPhoto.title} 
+                alt="Enlarged view" // FIXED: Generic Alt Text
                 className="w-auto h-auto max-w-full max-h-[90vh] object-contain block"
               />
               <button 
@@ -113,11 +112,11 @@ function PhotoCard({ photo, onClick }: { photo: any, onClick: () => void }) {
     >
       <img 
         src={photo.url} 
-        alt={photo.title}
+        alt="Portfolio Photo" // FIXED: Generic Alt Text
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
+      {/* REMOVED: The title text overlay is gone. Only the hover cue remains. */}
       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
-        <h3 className="text-white text-3xl font-serif italic tracking-tight">{photo.title}</h3>
         <p className="text-white/80 text-sm mt-2 flex items-center gap-2 font-mono uppercase tracking-widest">
            View Full <ChevronRight className="w-4 h-4" />
         </p>
