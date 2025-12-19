@@ -1,0 +1,13 @@
+# Secrets
+.env
+**/.env
+
+# Dependencies (Heavy folders)
+node_modules/
+**/venv/
+**/__pycache__/
+
+# System files
+.DS_Store
+.history/
+.vscode/
