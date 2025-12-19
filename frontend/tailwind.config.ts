@@ -8,10 +8,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      // 1. EXTEND FONTS HERE
       fontFamily: {
-        sans: ["var(--font-inter)"],      // Standard font
-        serif: ["var(--font-playfair)"],  // Fancy font
+        sans: ["var(--font-inter)"],
+        serif: ["var(--font-playfair)"],
+        
+        // 👇 serif-kr이 이제 "도현체"를 사용합니다.
+        "serif-kr": ["var(--font-dohyeon)", "sans-serif"], 
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

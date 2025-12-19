@@ -5,6 +5,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowDown, Code, Aperture } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
+// 👇 1. 나눔명조(Nanum Myeongjo)를 가져옵니다.
+import { Nanum_Myeongjo } from "next/font/google";
+
+// 👇 2. 굵기를 '800'(ExtraBold)으로 설정해서 드라마틱함을 살립니다.
+const kFont = Nanum_Myeongjo({
+  weight: "800",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 const heroImages = [
  "https://gundamsnap.s3.us-east-1.amazonaws.com/Me/KakaoTalk_20251216_232045483.jpg",
  "https://gundamsnap.s3.us-east-1.amazonaws.com/Shippo/KakaoTalk_20251216_232148736.jpg",
@@ -22,7 +32,6 @@ export default function Hero() {
     return () => clearInterval(timer);
   }, []);
 
-  // NEW: Scroll Function
   const scrollToPhotos = () => {
     const isMobile = window.innerWidth < 768;
     const targetId = isMobile ? "gallery-start-mobile" : "gallery-start";
@@ -59,27 +68,29 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white tracking-tighter leading-[1.1] mb-4 md:mb-6 drop-shadow-lg">
+          {/* 👇 3. 제목: 글자 간격(tracking)을 살짝 좁혀서(-tighter) 더 단단하고 영화 타이틀처럼 만듭니다 */}
+          <h1 className={`${kFont.className} text-4xl sm:text-5xl md:text-7xl text-white mb-4 md:mb-6 drop-shadow-lg leading-tight tracking-tight`}>
              {t.heroSubtitle}
           </h1>
 
-          <p className="text-neutral-200 md:text-neutral-400 text-sm md:text-xl max-w-md leading-relaxed mb-8 md:mb-8 drop-shadow-md">
+          {/* 👇 4. 본문: 본문은 가독성을 위해 간격 유지 */}
+          <p className={`${kFont.className} text-neutral-200 md:text-neutral-300 text-sm md:text-xl max-w-md leading-relaxed mb-8 md:mb-8 drop-shadow-md`}>
             {t.intro}
             <br className="hidden md:block"/>
-            <span className="block mt-2 opacity-80 text-xs md:text-lg">{t.shippoIntro}</span>
+            <span className="block mt-4 opacity-80 text-xs md:text-lg">
+              {t.shippoIntro}
+            </span>
           </p>
 
           <div className="flex gap-3 md:gap-4">
-             {/* "See Photos" Button - Connected to Scroll Function */}
              <button 
                 onClick={scrollToPhotos}
-                className="flex items-center gap-2 px-5 py-3 bg-white text-black font-bold rounded-full md:rounded-lg hover:bg-neutral-200 transition-colors text-sm md:text-base shadow-xl"
+                className="flex items-center gap-2 px-5 py-3 bg-white text-black font-medium rounded-full md:rounded-lg hover:bg-neutral-200 transition-colors text-sm md:text-base shadow-xl"
              >
                 <Aperture className="w-4 h-4" />
                 {t.btnPhotos}
              </button>
 
-             {/* Github Button - Opens new tab */}
              <a 
                 href="https://github.com/Dkim0911" 
                 target="_blank"
@@ -110,13 +121,12 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-r from-neutral-950 via-neutral-950/20 to-transparent z-10" />
       </div>
 
-      {/* SCROLL INDICATOR */}
       <motion.div 
         className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/50 flex flex-col items-center gap-2 z-30"
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 2 }}
       >
-        <span className="text-[10px] uppercase tracking-widest">Scroll</span>
+        <span className="text-[10px] uppercase tracking-widest font-sans">Scroll</span>
         <ArrowDown className="w-4 h-4" />
       </motion.div>
     </div>
