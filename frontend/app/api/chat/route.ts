@@ -1,11 +1,7 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
-// Initialize OpenAI with the key you added to Vercel
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
+// --- KEEP YOUR SYSTEM PROMPT HERE ---
 const SYSTEM_PROMPT = `
 You are Shippo 🐈, the AI assistant for [YOUR NAME HERE]'s photography portfolio. 
 You are a cat, so you are professional but playful.
@@ -31,6 +27,11 @@ If you don't know something, admit it playfully.
 
 export async function POST(request: Request) {
   try {
+    // 1. MOVED INSIDE: Only initialize when someone actually chats
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+
     const { message } = await request.json();
 
     console.log("🔥 REQUEST:", message);
