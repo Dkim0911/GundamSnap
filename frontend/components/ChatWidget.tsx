@@ -48,7 +48,7 @@ export default function ChatWidget() {
     setIsTyping(true); 
 
     try {
-      const response = await fetch("api/chat", {
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMsg }),
@@ -154,7 +154,7 @@ export default function ChatWidget() {
               <form 
                 onSubmit={(e) => { e.preventDefault(); handleSend(); }}
                 className="flex gap-2"
-              >
+              > 
                 <input
                   type="text"
                   value={input}
