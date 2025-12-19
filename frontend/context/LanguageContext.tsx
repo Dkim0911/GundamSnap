@@ -17,10 +17,10 @@ const translations = {
     greeting: "Meow!... Hi! I'm Shippo 🐈. I can help with photo styles or availability. What are you curious about?"
   },
   ko: {
-    heroTitle: "논리와 마법",
-    heroSubtitle: "논리를 코딩하고, 마법을 촬영합니다.",
-    intro: "안녕하세요, 건담 스냅입니다. 저는 소프트웨어 엔지니어링과 전문 사진 촬영의 경계를 잇는 작업을 합니다.",
-    shippoIntro: "(그리고 이쪽은 저의 최고 사기 진작 책임자, 싯포 🐈 입니다).",
+    heroTitle: "Logic & Magic",
+    heroSubtitle: "코드로 짓고, 빛으로 그리다",
+    intro: "안녕하세요, 건담 스냅입니다. 개발자의 눈으로 세상을 구조적으로 보고, 포토그래퍼의 마음으로 그 안의 낭만을 찾아냅니다.",
+    shippoIntro: "(제 작업의 원동력인 고양이 비서, 싯포 🐈 도 인사드립니다).",
     btnPhotos: "사진 보기",
     btnGithub: "깃허브 보기",
     badge: "구직 중",
