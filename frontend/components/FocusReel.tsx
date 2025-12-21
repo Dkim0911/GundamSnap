@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { ChevronRight, X } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
-import Image from "next/image"; // 1. Image 컴포넌트
+import Image from "next/image"; 
 
 const photos = [
   { id: 1, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/535267512_3904455299851881_8001273326730162823_n.heic" },
@@ -86,7 +86,7 @@ export default function FocusReel() {
               onClick={(e) => e.stopPropagation()} 
             >
               <img 
-                src={selectedPhoto.url.trim()} // 2. trim 적용
+                src={selectedPhoto.url.trim()} 
                 alt="Enlarged view"
                 className="w-auto h-auto max-w-full max-h-[90vh] object-contain block"
               />
@@ -105,23 +105,20 @@ export default function FocusReel() {
 }
 
 function PhotoCard({ photo, onClick }: { photo: any, onClick: () => void }) {
-  // HEIC 파일인지 확인하는 변수
-  const isHeic = photo.url.toLowerCase().includes('.heic');
-
   return (
     <div 
       onClick={onClick}
       className="relative shrink-0 w-[85vw] md:w-[500px] aspect-[2/3] rounded-sm overflow-hidden cursor-pointer group transition-all duration-500 ease-out border border-white/5 bg-neutral-900 shadow-2xl hover:border-white/30"
     >
-      {/* 3. Next.js Image 적용 */}
       <Image 
-        src={photo.url.trim()} // 4. 공백 제거
+        src={photo.url.trim()} 
         alt="Portfolio Photo" 
         fill
         className="object-cover transition-transform duration-700 group-hover:scale-105"
         sizes="(max-width: 768px) 85vw, 500px"
-        // 5. 핵심: HEIC 파일이면 최적화 끄기 (서버 에러 방지)
-        unoptimized={isHeic} 
+        // 👇 핵심 해결책: 모든 이미지가 HEIC이므로 강제로 최적화를 끕니다.
+        // 이렇게 하면 서버가 변환 작업을 하지 않아 에러가 나지 않습니다.
+        unoptimized={true}
       />
       
       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
