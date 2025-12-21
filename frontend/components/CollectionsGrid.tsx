@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Maximize2, ChevronDown } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext"; 
+import Image from "next/image"; // 👈 최적화 컴포넌트 추가
 
-// ... (Your existing allPhotos array stays here) ...
+// ... (기존 allPhotos 데이터는 그대로 두세요. 너무 길어서 생략합니다.) ...
 const allPhotos = [
   { id: 1, category: "weddings", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Wedding/483278643_1306193017272450_6850192804037755443_n.heic", title: "", specs: "ISO 400 • f/1.8 • 1/2000s" },
   { id: 2, category: "weddings", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Wedding/483933443_1169535291531905_3554273313930417656_n.heic", title: "", specs: "ISO 400 • f/1.8 • 1/2000s" },
@@ -23,9 +25,77 @@ const allPhotos = [
   { id: 15, category: "weddings", url: " https://gundamsnap.s3.us-east-1.amazonaws.com/Wedding/575965073_18004158329819013_4885523971114578824_n.heic", title: " ", specs: "ISO 400 • f/1.8 • 1/2000s" },
   { id: 16, category: "weddings", url: " https://gundamsnap.s3.us-east-1.amazonaws.com/Wedding/580576821_18004158338819013_9202504934975730_n.heic", title: " ", specs: "ISO 400 • f/1.8 • 1/2000s" },
 
+  { id: 17, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/491495416_3965537693688401_9041840034892499790_n.heic", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 18, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/491897190_1102793884941205_5003656687309355808_n.heic", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 19, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/497192154_1742898586604751_5947079437609506409_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 20, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/497409904_1012392897540179_7971688212912654929_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 21, category: "graduation", url: " https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/498302354_676053915354361_8212619349833851722_n.heic", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 22, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/498704351_670819202588516_7039279371721156079_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 23, category: "graduation", url: " https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/502707094_683304234471199_6415715858775977057_n.heic", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 24, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/502711139_718717120570403_7086948843982551342_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 25, category: "graduation", url: " https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/502992234_1368619090859122_5773000484268668564_n.heic", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 26, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/503030265_1504819030479905_2361594450475709780_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 27, category: "graduation", url: " https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/503314706_2172834936474997_6599142741721626373_n.heic", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 28, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/504141047_2735133483351552_7881614569176289822_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 29, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/504197388_1912227612941723_1889325038354872945_n.heic", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 30, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/505123774_1852987062147623_4376389147970514559_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 31, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/505453823_1443819846791697_5182331327898770852_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 32, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/514707815_780940094272399_1743861555334110385_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 33, category: "graduation", url: " https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/516393907_24529785409992884_8036228683649255228_n.heic", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 34, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/516561534_1264940418505644_3215474373426842387_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 35, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/517400774_1464938544859030_4260603339295066246_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 36, category: "graduation", url: " https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/527561723_1461883894847473_4694501824789537309_n.heic", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 37, category: "graduation", url: " https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/528054542_3238364272987134_7986823959461907383_n.heic", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 38, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/528652514_2168932490276047_7861283854825049355_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 39, category: "graduation", url: " https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/559122668_18000315791819013_3260192696217110117_n.heic", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 40, category: "graduation", url: " https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/559262135_18000315953819013_8094942252985796890_n.heic", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 41, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/559438824_18000315887819013_7526463290938790359_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 42, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/559907946_18000315941819013_4945895457867034499_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  { id: 43, category: "graduation", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Grad/559907946_18000315941819013_4945895457867034499_n.heic ", title: " ", specs: "ISO 1400 • f/2.8 • 1/100s" },
+  
+  { id: 44, category: "portraits", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/portrait/494006454_1339236077133770_7812831058633152540_n.heic ", title: " ", specs: "ISO 400 • f/4.0 • 1/500s" },
+  { id: 45, category: "portraits", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/portrait/495129018_1860748114722517_8538559678675404957_n.heic ", title: " ", specs: "ISO 400 • f/4.0 • 1/500s" },
+  { id: 46, category: "portraits", url: " https://gundamsnap.s3.us-east-1.amazonaws.com/portrait/496358448_457890090740399_153087090492319940_n.heic", title: " ", specs: "ISO 400 • f/4.0 • 1/500s" },
+
+  { id: 47, category: "family", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/family/587802153_18005754083819013_6768598122445420901_n.heic", title: " ", specs: "ISO 900 • f/6.0 • 1/1500s" },
+  { id: 48, category: "family", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/family/591121954_18005754104819013_7034465213696952520_n.heic", title: " ", specs: "ISO 900 • f/6.0 • 1/1500s" },
+  { id: 49, category: "family", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/family/591140837_18005754005819013_5144521881938673645_n.heic", title: " ", specs: "ISO 900 • f/6.0 • 1/1500s" },
+
+  { id: 50, category: "maternity", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Maternity/519675471_1049628567292521_898396229982885195_n.heic", title: " ", specs: "ISO 1100 • f/5.0 • 1/11500s" },
+  { id: 51, category: "maternity", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Maternity/519689965_2587639928235775_6839871437623690397_n.heic", title: " ", specs: "ISO 1100 • f/5.0 • 1/11500s" },
+  { id: 52, category: "maternity", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Maternity/521691874_1247207823208747_7009025051623278233_n.heic", title: " ", specs: "ISO 1100 • f/5.0 • 1/11500s" },
+
+  { id: 53, category: "couple", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/couple/487696922_3810541062519681_800658080783669805_n.heic", title: " ", specs: "ISO 3000 • f/8.0 • 1/2500s" },
+  { id: 54, category: "couple", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/couple/488206601_3989094074673392_7424324062978903696_n.heic", title: " ", specs: "ISO 3000 • f/8.0 • 1/2500s" },
+  { id: 55, category: "couple", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/couple/488480007_969566975392841_3569867427780699813_n.heic", title: " ", specs: "ISO 3000 • f/8.0 • 1/2500s" },
+  { id: 56, category: "couple", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/couple/495531641_2168129226989293_3662426146766442129_n.heic", title: " ", specs: "ISO 3000 • f/8.0 • 1/2500s" },
+  { id: 57, category: "couple", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/couple/495674392_1052986236742292_7192999295702587184_n.heic", title: " ", specs: "ISO 3000 • f/8.0 • 1/2500s" },
+
+  { id: 58, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/486663875_637065875959028_3857943899283404276_n.heic", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 59, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/486675303_4009894265953160_2486347416272116566_n.heic", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 60, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/486825861_647314718260580_1221874646501346486_n.heic", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 61, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/489536693_1149177963358196_4174334768090116787_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 62, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/489858367_678639281484857_2392473643447251943_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 63, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/491494491_1726601447956436_3980948303514100043_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 64, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/491518216_1183021093565935_5879248494599862877_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 65, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/534163188_607477868893587_5308507215671013681_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 66, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/534218431_1510044880026066_7502893934308007331_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 67, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/534523515_1433702427850914_243553870810016157_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 68, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/535267512_3904455299851881_8001273326730162823_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 69, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/535615067_1271004758101435_4603442091290327442_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 70, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/537360417_1953409085417854_5898263251068748680_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 71, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/537770755_1717233662299492_5926894754899099151_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 72, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/549146485_17997747683819013_7678916420991180573_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 73, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/549162028_17997747632819013_1260991540298845767_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 74, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/549428538_17997747719819013_2819955155791277293_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 75, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/552604609_17998677257819013_5352390763070535781_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 76, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/552722985_17998677296819013_2613647793211890460_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 77, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/554964179_17998677248819013_8907473286905233585_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 79, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/565951395_18001795778819013_457205484287609084_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+  { id: 80, category: "other", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/566593708_18001795712819013_2263524674656509398_n.heic ", title: " ", specs: "ISO 200 • f/2.8 • 1/100s" },
+
 ];
 
-const categories = ["all", "weddings", "portraits", "couple", "maternity", "graduation", "family", "other"];
 const ITEMS_PER_PAGE = 9;
 
 // 1. HELPER: Fisher-Yates Shuffle Algorithm
@@ -39,34 +109,34 @@ const shuffleArray = (array: typeof allPhotos) => {
 };
 
 export default function CollectionsGrid() {
+  const { t, language } = useLanguage(); 
   const [filter, setFilter] = useState("all");
-  
-  // 2. STATE: 'activePhotos' holds the currently filtered AND shuffled list
-  // We initialize with 'allPhotos' (static) to prevent Hydration Errors, 
-  // then shuffle immediately in useEffect.
   const [activePhotos, setActivePhotos] = useState(allPhotos);
-  
   const [selectedPhoto, setSelectedPhoto] = useState<typeof allPhotos[0] | null>(null);
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
-  // 3. EFFECT: Randomize "All" on initial page load
+  const categories = [
+    { id: "all", label: t.catAll },
+    { id: "weddings", label: t.catWeddings },
+    { id: "couple", label: t.catCouple },
+    { id: "maternity", label: t.catMaternity },
+    { id: "graduation", label: t.catGraduation },
+    { id: "family", label: t.catFamily },
+    { id: "portraits", label: t.catPortraits },
+    { id: "other", label: t.catOther },
+  ];
+
   useEffect(() => {
     setActivePhotos(shuffleArray(allPhotos));
   }, []);
 
-  // 4. HANDLER: When category changes, Filter THEN Shuffle
-  const handleFilterChange = (cat: string) => {
-    setFilter(cat);
-    
-    // Step A: Filter
-    const filtered = cat === "all" 
+  const handleFilterChange = (catId: string) => {
+    setFilter(catId);
+    const filtered = catId === "all" 
       ? allPhotos 
-      : allPhotos.filter(p => p.category === cat);
+      : allPhotos.filter(p => p.category === catId);
       
-    // Step B: Randomize
     setActivePhotos(shuffleArray(filtered));
-    
-    // Step C: Reset Page
     setVisibleCount(ITEMS_PER_PAGE);
   };
 
@@ -74,8 +144,10 @@ export default function CollectionsGrid() {
     setVisibleCount((prev) => prev + ITEMS_PER_PAGE);
   };
 
-  // Slice based on the currently active randomized list
   const visiblePhotos = activePhotos.slice(0, visibleCount);
+
+  // Font class for Korean title
+  const titleFontClass = language === "ko" ? "font-serif-kr tracking-tight" : "tracking-tighter";
 
   return (
     <section className="min-h-screen bg-neutral-950 py-24 px-6 md:px-12 border-t border-white/10 relative z-10">
@@ -83,19 +155,27 @@ export default function CollectionsGrid() {
       {/* HEADER */}
       <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
         <div>
-          <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tighter mb-2">Collections</h2>
-          <p className="text-neutral-400">Curated moments categorized by vibe.</p>
+          <h2 className={`text-3xl md:text-5xl font-bold text-white mb-2 ${titleFontClass}`}>
+            {t.colTitle}
+          </h2>
+          <p className="text-neutral-400">
+            {t.colSubtitle}
+          </p>
         </div>
+
+        {/* Categories Buttons */}
         <div className="flex flex-wrap gap-2">
           {categories.map((cat) => (
             <button
-              key={cat}
-              onClick={() => handleFilterChange(cat)}
+              key={cat.id}
+              onClick={() => handleFilterChange(cat.id)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all capitalize ${
-                filter === cat ? "bg-white text-black" : "bg-neutral-900 text-neutral-400 hover:bg-neutral-800 hover:text-white border border-white/10"
+                filter === cat.id 
+                  ? "bg-white text-black" 
+                  : "bg-neutral-900 text-neutral-400 hover:bg-neutral-800 hover:text-white border border-white/10"
               }`}
             >
-              {cat}
+              {cat.label}
             </button>
           ))}
         </div>
@@ -113,17 +193,22 @@ export default function CollectionsGrid() {
               transition={{ duration: 0.3 }}
               key={photo.id}
               onClick={() => setSelectedPhoto(photo)}
-              className="relative aspect-[3/4] group cursor-pointer overflow-hidden rounded-xl border border-white/5"
+              className="relative aspect-[3/4] group cursor-pointer overflow-hidden rounded-xl border border-white/5 bg-neutral-900"
             >
-              <img 
+              {/* 👇 1. Next.js Image Component로 교체 (모바일 최적화 핵심) */}
+              <Image 
                 src={photo.url} 
-                alt={photo.title} 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                alt={photo.title || "Gallery Photo"} 
+                fill // 부모 div(aspect-[3/4])를 가득 채움
+                className="object-cover transition-transform duration-700 group-hover:scale-105" 
+                // 👇 화면 크기에 따라 적절한 크기의 이미지를 받도록 설정 (데이터 절약)
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
               />
+              
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <div className="flex items-center gap-2 text-white border border-white/30 px-4 py-2 rounded-full backdrop-blur-md">
                    <Maximize2 className="w-4 h-4" />
-                   <span className="text-xs uppercase tracking-widest">Inspect</span>
+                   <span className="text-xs uppercase tracking-widest">{t.inspect}</span>
                 </div>
               </div>
             </motion.div>
@@ -138,7 +223,7 @@ export default function CollectionsGrid() {
             onClick={handleLoadMore}
             className="group flex flex-col items-center gap-2 text-neutral-400 hover:text-white transition-colors"
           >
-            <span className="text-sm uppercase tracking-[0.2em]">See More</span>
+            <span className="text-sm uppercase tracking-[0.2em]">{t.btnSeeMore}</span>
             <div className="p-3 rounded-full border border-white/10 group-hover:bg-white group-hover:text-black transition-all">
                <ChevronDown className="w-5 h-5" />
             </div>
@@ -159,7 +244,9 @@ export default function CollectionsGrid() {
               className="relative w-full max-w-5xl aspect-[3/2] md:aspect-[16/9] bg-black border border-white/10 rounded-lg overflow-hidden shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* 모달은 원본 비율 유지를 위해 img 태그 유지 (혹은 fill + object-contain 사용 가능) */}
               <img src={selectedPhoto.url} alt={selectedPhoto.title} className="w-full h-full object-contain" />
+              
               <div className="absolute inset-0 pointer-events-none p-6 md:p-12 flex flex-col justify-between">
                 <div className="flex justify-between items-start text-green-400 font-mono text-xs md:text-sm tracking-widest drop-shadow-md">
                    <div className="flex flex-col gap-1"><span>REC ●</span><span>[ {selectedPhoto.specs} ]</span></div>
@@ -170,7 +257,11 @@ export default function CollectionsGrid() {
                 </div>
                 <div className="flex justify-between items-end text-white/80 font-sans">
                    <div><h3 className="text-2xl md:text-4xl font-bold uppercase tracking-tighter">{selectedPhoto.title}</h3></div>
-                   <div className="text-right"><button onClick={() => setSelectedPhoto(null)} className="pointer-events-auto hover:text-green-400 transition-colors flex items-center gap-2 text-sm uppercase tracking-widest">Close <X className="w-4 h-4" /></button></div>
+                   <div className="text-right">
+                     <button onClick={() => setSelectedPhoto(null)} className="pointer-events-auto hover:text-green-400 transition-colors flex items-center gap-2 text-sm uppercase tracking-widest">
+                       {t.close} <X className="w-4 h-4" />
+                     </button>
+                   </div>
                 </div>
               </div>
             </motion.div>
