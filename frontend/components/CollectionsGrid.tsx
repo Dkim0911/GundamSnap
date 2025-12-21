@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Maximize2, ChevronDown } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext"; 
-import Image from "next/image"; // 👈 최적화 컴포넌트 추가
+import Image from "next/image"; 
 
-// ... (기존 allPhotos 데이터는 그대로 두세요. 너무 길어서 생략합니다.) ...
+// ... (기존 allPhotos 데이터 유지) ...
+// 주의: 데이터가 너무 길어 생략했습니다. 기존 데이터를 그대로 두세요.
 const allPhotos = [
   { id: 1, category: "weddings", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Wedding/483278643_1306193017272450_6850192804037755443_n.heic", title: "", specs: "ISO 400 • f/1.8 • 1/2000s" },
   { id: 2, category: "weddings", url: "https://gundamsnap.s3.us-east-1.amazonaws.com/Wedding/483933443_1169535291531905_3554273313930417656_n.heic", title: "", specs: "ISO 400 • f/1.8 • 1/2000s" },
@@ -98,7 +99,7 @@ const allPhotos = [
 
 const ITEMS_PER_PAGE = 9;
 
-// 1. HELPER: Fisher-Yates Shuffle Algorithm
+// Helper: Shuffle
 const shuffleArray = (array: typeof allPhotos) => {
   const newArray = [...array];
   for (let i = newArray.length - 1; i > 0; i--) {
@@ -145,8 +146,6 @@ export default function CollectionsGrid() {
   };
 
   const visiblePhotos = activePhotos.slice(0, visibleCount);
-
-  // Font class for Korean title
   const titleFontClass = language === "ko" ? "font-serif-kr tracking-tight" : "tracking-tighter";
 
   return (
@@ -162,8 +161,6 @@ export default function CollectionsGrid() {
             {t.colSubtitle}
           </p>
         </div>
-
-        {/* Categories Buttons */}
         <div className="flex flex-wrap gap-2">
           {categories.map((cat) => (
             <button
@@ -195,14 +192,16 @@ export default function CollectionsGrid() {
               onClick={() => setSelectedPhoto(photo)}
               className="relative aspect-[3/4] group cursor-pointer overflow-hidden rounded-xl border border-white/5 bg-neutral-900"
             >
-              {/* 👇 1. Next.js Image Component로 교체 (모바일 최적화 핵심) */}
+              {/* 👇 수정됨: photo.url.trim()을 사용하여 URL 공백 제거 */}
               <Image 
-                src={photo.url} 
+                src={photo.url.trim()} 
                 alt={photo.title || "Gallery Photo"} 
-                fill // 부모 div(aspect-[3/4])를 가득 채움
+                fill 
                 className="object-cover transition-transform duration-700 group-hover:scale-105" 
-                // 👇 화면 크기에 따라 적절한 크기의 이미지를 받도록 설정 (데이터 절약)
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                // HEIC 파일 에러 방지를 위한 unoptimized 옵션 (임시 방편)
+                // 만약 여전히 에러가 나면 이 옵션을 켜야 할 수도 있습니다.
+                // unoptimized={photo.url.includes('.heic')} 
               />
               
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -216,7 +215,7 @@ export default function CollectionsGrid() {
         </AnimatePresence>
       </motion.div>
 
-      {/* LOAD MORE BUTTON */}
+      {/* LOAD MORE */}
       {visibleCount < activePhotos.length && (
         <div className="flex justify-center mt-16">
           <button 
@@ -244,8 +243,8 @@ export default function CollectionsGrid() {
               className="relative w-full max-w-5xl aspect-[3/2] md:aspect-[16/9] bg-black border border-white/10 rounded-lg overflow-hidden shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* 모달은 원본 비율 유지를 위해 img 태그 유지 (혹은 fill + object-contain 사용 가능) */}
-              <img src={selectedPhoto.url} alt={selectedPhoto.title} className="w-full h-full object-contain" />
+              {/* 모달 이미지: 여기도 .trim() 적용 */}
+              <img src={selectedPhoto.url.trim()} alt={selectedPhoto.title} className="w-full h-full object-contain" />
               
               <div className="absolute inset-0 pointer-events-none p-6 md:p-12 flex flex-col justify-between">
                 <div className="flex justify-between items-start text-green-400 font-mono text-xs md:text-sm tracking-widest drop-shadow-md">
