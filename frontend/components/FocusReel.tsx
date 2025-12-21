@@ -10,11 +10,11 @@ const photos = [
   { id: 1, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/535267512_3904455299851881_8001273326730162823_n.heic" },
   { id: 2, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/554964179_17998677248819013_8907473286905233585_n.heic" },
   { id: 3, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/489858367_678639281484857_2392473643447251943_n.heic" },
-  { id: 4, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/495674392_1052986236742292_7192999295702587184_n.heic" },
-  { id: 5, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/518457248_1946458459510988_484642713090936153_n.heic" },
+  { id: 4, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/491494491_1726601447956436_3980948303514100043_n.heic" },
+  { id: 5, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/534163188_607477868893587_5308507215671013681_n.heic" },
   { id: 6, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/486663875_637065875959028_3857943899283404276_n.heic" }, 
   { id: 7, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/591140837_18005754005819013_5144521881938673645_n.heic" },
-  { id: 8, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/591121954_18005754104819013_7034465213696952520_n.heic" },
+  { id: 8, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/534218431_1510044880026066_7502893934308007331_n.heic" },
   { id: 9, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/565951395_18001795778819013_457205484287609084_n.heic" },
   { id: 10, url: "https://gundamsnap.s3.us-east-1.amazonaws.com/other/566593708_18001795712819013_2263524674656509398_n.heic" }
 ];
